@@ -4,10 +4,9 @@ const Promise = require("promise");
 const promisify = require("promisify-node");
 const exec = promisify(require("child_process").exec);
 const path = require("path");
-const fs = require("fs");
+const fs = require("fs-extra");
 const inq = require("inquirer");
 const GitHub = require("github");
-const licenseText = require("./licenseText");
 const pace = require("pace");
 
 let moduleName = path.basename(process.cwd());
@@ -54,18 +53,6 @@ inq.prompt([ {
 	type: "input",
 	name: "authorEmail",
 	message: "Author's email:"
-}, {
-	type: "list",
-	name: "license",
-	message: "License:",
-	choices: [
-		"ISC",
-		"MIT",
-		"BSD-2-Clause",
-		"BSD-3-Clause",
-		"Public Domain"
-	],
-	default: "ISC"
 }, {
 	type: "input",
 	name: "entry",
@@ -129,7 +116,7 @@ inq.prompt([ {
 		main: answers.entry,
 		keywords: answers.keywords,
 		author,
-		license: answers.license
+		license: "CC0-1.0"
 	};
 
 	new Promise(function(resolve) {
@@ -185,10 +172,10 @@ inq.prompt([ {
 			resolve();
 		}
 	}).then(function(gitRepoUrl) {
-		licenseText(answers.license, author);
 		fs.writeFileSync("package.json", JSON.stringify(pkgJson, null, "  "));
-		fs.writeFileSync("LICENSE.md", licenseText(answers.license, author));
-		fs.writeFileSync("README.md", `# ${answers.name}`);
+		fs.copySync(path.join(__dirname, "LICENSE.md"), "LICENSE.md");
+		fs.copySync(path.join(__dirname, "CONTRIBUTING.md"), "LICENSE.md");
+		fs.writeFileSync("README.md", `# ${answers.name}\n\n### Public domain\n\nThis project is in the worldwide [public domain](LICENSE.md). As stated in [CONTRIBUTING](CONTRIBUTING.md):\n\n> This project is in the public domain within the United States, and copyright and related rights in the work worldwide are waived through the [CC0 1.0 Universal public domain dedication](https://creativecommons.org/publicdomain/zero/1.0/).\n>\n> All contributions to this project will be released under the CC0 dedication. By submitting a pull request, you are agreeing to comply with this waiver of copyright interest.`);
 		progress.op();
 
 		if (answers.useGit) {
