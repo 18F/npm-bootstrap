@@ -173,9 +173,9 @@ inq.prompt([ {
 		}
 	}).then(function(gitRepoUrl) {
 		fs.writeFileSync("package.json", JSON.stringify(pkgJson, null, "  "));
-		fs.copySync(path.join(__dirname, "LICENSE.md"), "LICENSE.md");
-		fs.copySync(path.join(__dirname, "CONTRIBUTING.md"), "LICENSE.md");
-		fs.writeFileSync("README.md", `# ${answers.name}\n\n### Public domain\n\nThis project is in the worldwide [public domain](LICENSE.md). As stated in [CONTRIBUTING](CONTRIBUTING.md):\n\n> This project is in the public domain within the United States, and copyright and related rights in the work worldwide are waived through the [CC0 1.0 Universal public domain dedication](https://creativecommons.org/publicdomain/zero/1.0/).\n>\n> All contributions to this project will be released under the CC0 dedication. By submitting a pull request, you are agreeing to comply with this waiver of copyright interest.`);
+		fs.copySync(path.join(__dirname, "../LICENSE.md"), "LICENSE.md");
+		fs.copySync(path.join(__dirname, "../CONTRIBUTING.md"), "CONTRIBUTING.md");
+		fs.writeFileSync("README.md", `# ${answers.name}\n\n### Public domain\n\nThis project is in the worldwide [public domain](LICENSE.md). As stated in [CONTRIBUTING](CONTRIBUTING.md):\n\n> This project is in the public domain within the United States, and copyright and related rights in the work worldwide are waived through the [CC0 1.0 Universal public domain dedication](https://creativecommons.org/publicdomain/zero/1.0/).\n>\n> All contributions to this project will be released under the CC0 dedication. By submitting a pull request, you are agreeing to comply with this waiver of copyright interest.\n`);
 		progress.op();
 
 		if (answers.useGit) {
